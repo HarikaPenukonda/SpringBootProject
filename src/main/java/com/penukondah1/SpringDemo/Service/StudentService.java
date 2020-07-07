@@ -3,14 +3,21 @@ package com.penukondah1.SpringDemo.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.penukondah1.SpringDemo.Model.Student;
+import com.penukondah1.SpringDemo.Repository.StudentRepository;
 
 //This service creates a new instance and registers it
 @Service
 public class StudentService {
+	
+	@Autowired /*When spring creates an instance of student service 
+	it's gonna inject an instance of the student repository */
+	private StudentRepository studentRepository;
 	
 	/* Using Arrays.asList method to create this list in line and calling the constructor on the student class
 	 * to create new student objects*/
@@ -23,38 +30,30 @@ public class StudentService {
 			));
 	
 	public List<Student> getAllStudents(){
+		List<Student> students = new ArrayList<>(); //creating a new student list
+		studentRepository.findAll() //iterating over the result of the findAll from the student repository which is basically an iterable of all the students in the DB
+		.forEach(students::add); //for each of them we are populating the student list with that element //lambda expression
 		return students;
 	}
 	
-	public Student getStudent(String id)
+	public Optional<Student> getStudent(String id)
 	{
-		return students.stream().filter(t -> t.getSid().equals(id)).findFirst().get();
-		/* filtering by ID, using lambda expression comparing the id of the student with the id we are sending
-		 * findFirst to get the very first student element and get() to get student instance*/
-		
+		return studentRepository.findById(id);
 	}
 	
 	public void addStudent(Student student)
 	{
-		students.add(student);
+		studentRepository.save(student);
 	}
 
 	public void updateStudent(Student student, String id) 
 	{
-		for(int i=0;i<students.size();i++)
-		{
-			Student s = students.get(i);
-			if(s.getSid().equals(id))
-			{
-				students.set(i, student);
-			}
-		}
-		
+		studentRepository.save(student);
 	}
 
 	public void deleteStudent(String id) 
 	{
-		students.removeIf(t -> t.getSid().equals(id));
+		studentRepository.deleteById(id);
 		
 	}
 
