@@ -1,7 +1,6 @@
 package com.penukondah1.SpringDemo.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +26,19 @@ public class StudentService {
 		return students;
 	}
 	
+//	public Optional<Student> getStudent(String id)
+//	{
+//		return studentRepository.findById(id);
+//	}
+	
 	public Student getStudent(String id)
 	{
-		return studentRepository.findById(id);
+		Optional<Student> optionalEntity = studentRepository.findById(id);
+		Student student = optionalEntity.get();
+		return student;
 	}
+	
+	
 	
 	public void addStudent(Student student)
 	{
