@@ -19,15 +19,6 @@ public class StudentService {
 	it's gonna inject an instance of the student repository */
 	private StudentRepository studentRepository;
 	
-	/* Using Arrays.asList method to create this list in line and calling the constructor on the student class
-	 * to create new student objects*/
-	private List<Student> students = new ArrayList<>(Arrays.asList(
-			new Student("101","Archie","ECE"),
-			new Student("102","Betty","CSE"),
-			new Student("103","Cheryl","EEE"),
-			new Student("104","Juniper","MECH"),
-			new Student("105","Dagwood","CE")
-			));
 	
 	public List<Student> getAllStudents(){
 		List<Student> students = new ArrayList<>(); //creating a new student list
@@ -36,7 +27,7 @@ public class StudentService {
 		return students;
 	}
 	
-	public Optional<Student> getStudent(String id)
+	public Student getStudent(String id)
 	{
 		return studentRepository.findById(id);
 	}
