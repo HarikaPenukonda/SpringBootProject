@@ -1,7 +1,13 @@
 package com.penukondah1.SpringDemo.Model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity /*specifies that the class is an entity and is mapped to a database table
+*/
 public class Student {
 	
+	@Id /*marks a field in a model class as the Primary key*/
 	private String sid;
 	private String sname;
 	private String dept;
