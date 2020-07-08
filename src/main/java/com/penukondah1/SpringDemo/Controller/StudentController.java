@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.penukondah1.SpringDemo.Model.Student;
 import com.penukondah1.SpringDemo.Service.StudentService;
 
-
-
 @RestController
 public class StudentController {
 	
