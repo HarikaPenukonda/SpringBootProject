@@ -24,6 +24,7 @@ Every repository in Spring Data extends the generic Repository Interface.
 3. JPARepository provides JPA related methods such as flushing the persistence context and delete records in a batch. 
 
 CRUD functionality
+
 1. <S extends T> S save(S entity) - we can pass multiple objects to save them in a batch
 2. T findOne(ID primaryKey) - get a single entity based on passed primary key value
 3. Iterable<T> findAll() - get an iterable of all available entities in database.
