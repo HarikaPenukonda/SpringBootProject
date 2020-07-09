@@ -43,7 +43,7 @@ Spring Boot automatically scans all the components included in the project by us
 #### dependencies
 1. **Spring Boot Starter Actuator** is used to monitor and manage our application
 
-2.**Apring Boot Starter Security** is used for spring security
+2. **Spring Boot Starter Security** is used for spring security
 
 3. **Spring Boot Starter Thyme Leaf dependency** is used to create a web application.
 
@@ -77,7 +77,7 @@ Spring Boot Servlet Initializer class file allows you to configure the applicati
 
 For Maven, add the packaging as WAR in pom.xml as
 
- **<packaging>war</packaging>**
+	<packaging>war</packaging>
  
  deploy the WAR files under the webapps directory
  
@@ -92,31 +92,374 @@ on the release
 
 For maven configuration, we should inherit the SPring Boot Starter parent project to manage the Spring Boot dependencies.
 
-**<parent>**
-
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>1.5.8.RELEASE</version>
-	
-**</parent>**
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.8.RELEASE</version>
+	</parent>
 
 we should specify the version number for Spring Boot Parent Starter dependency. Then for other starter dependencies, we do not need to specify the Spring Boot version number.
 
 
-<dependencies>
-	
-	<dependency>
-		 <groupId>org.springframework.boot</groupId>
-		 <artifactId>spring-boot-starter-web</artifactId> 
-	</dependency>
-	
-</dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId> 
+		</dependency>
+	</dependencies>
 
 Spring Boot will cause issues such as malfunctioning of Auto Configuration or Component Scan, when we use default package.
 
 #### Spring Boot - Spring Beans and Dependency Injection
 
 In Spring Boot, we can use Spring Framework to define our beans and their dependencies injection. The **@ComponentScan** is used to find beans and corresponding injected with **@Autowired** annotation
+
+In Spring, the objects that form the backbone of our application and that are managed by the Spring IoC container are called beans. A bean is an object instantiated, assembled and otherwise managed by a Spring IoC container.
+
+#### Spring Boot - Runners
+
+**Application Runner**
+
+Application Runner is an interface used to execute the code after the Spring Boot application started. 
+
+**Command Line Runner**
+
+Command Line Runner is an interface. It is used to execute the code after the Spring Boot application started.
+
+
+#### Spring Boot - Application Properties
+
+**Command Line Properties**
+
+Spring Boot application converts the command line properties into Spring Boot Environment properties.Command line properties take precedence over the other property sources.By default, Spring Boot uses the 8080 port number to start the Tomcat.
+
+	C:\demo\target>java -jar demo-0.0.1-SNAPSHOT.jat --server.port=9090
+
+**Properties File**
+
+Properties files are used to keep 'N' number of properties in a single file to run the application in a different environment.In Spring Boot, properties are kept in the **application.properties** file
+	
+	server.port=9090
+	spring.application.name=demoservice
+
+**YAML file**
+Spring Boot supports YAML based properties configurations to run the application. Instead of **application.properties**, we can use **application.yml** file. This YAML file also should be kept inside the classpath.
+
+	spring:
+		application
+		name: demoservice
+	server:
+		port:9090
+		
+**Externalized Properties**
+
+Instead of keeping the properties file under classpath, we can keep the properties in different location or path. While running the JAR file, we can specify the properties file path.
+
+	>java -jar -Dspring.config.location=C:\application.properties demo-0.0.1-SNAPSHOT.jar
+	
+**@Value Annotation**
+
+The @Value is used to read the environment or application property value in Java Code.
+
+	@Value("${spring.application.name:demoservice}")
+
+**Spring Boot Active Profile**
+
+Spring Boot supports different properties based on the Spring active profile. We can keep two seperate file for development and production to run the Spring Boot application.
+
+**application-dev.properties**
+	
+	server.port=9090
+	spring.application.name=demoservice
+
+
+**application-prod.properties**
+	
+	server.port=4431
+	spring.application.name=demoservice
+
+#### Spring Boot - Logging
+
+Spring Boot uses Apache COmmons logging for all internal logging. Spring Boot's default configurations provides a support for the use of Java Util Logging, Log4j2, and Logback. Using these, we can configure the console logging as well as file logging.
+
+Spring Boot Starters, Logback will provide a good support for logging.
+
+1. Date and time that gives the date and time of the log.
+2. Log level shows INFO, ERROR or WARN
+3. Process ID
+4. The --- is a separator
+5. Thread name is enclosed with in square brackets []
+6. Logger Name that shows the Source class name
+7. The log message
+
+If we have to enable the debug level log
+	
+	java -jar demo.jar --debug
+
+application.properties
+
+	debug=true 
+	
+**File Log Output**
+
+By default, all logs will print on the console window and not in the files. If we want to print the logs in a file, we need to set the property **logging.file** or **logging.path** in the application.properties file.
+
+**Log levels**
+
+Spring Boot supports all logger levels such as “TRACE”, “DEBUG”, “INFO”, “WARN”,
+“ERROR”, “FATAL”, “OFF”.we can define Root logger in the application.properties file as
+
+	logging.level.root=WARn
+
+**Note:** Logback does not support “FATAL” level log. It is mapped to the “ERROR” level log.
+
+**Configure Logback**
+
+Logback supports XML based configuration to handle Spring Boot Log configurations. Logging configuration details are configured in **logback.xml** file.
+
+	@SpringBootApplication{
+		private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class):
+		
+		public static void (String[] args){
+		logger.info("this is a info message");
+		logger.warn("this is a warn message");
+		logger.error("this is a error message");
+		SpringApplication.run(DemoApplication.class,args);
+		}
+	}
+
+#### Spring Boot - Building RESTful web services
+
+Spring Boot provides a very good support to building RESTful Web Services for enterprise applications.
+
+**Note:** For building a RESTful Web Services, we need to add the Spring Boot Starter Web dependency into the build configuration file.
+
+**Rest Controller**
+
+The @RestController is used to define the RESTful web services. It serves JSON, XML and custom response.
+
+**Request Mapping**
+
+The @RequestMapping annotation is used to define the Request URI to access the REST endpoints. The default request method is GET.
+
+**Request Body**
+
+The @RequestBody is used to define the request body content type
+
+**Path Variable**
+The @PathVariable is used to define the custom or dynamic request URI. it is defined as curly braced{}
+	 
+	 public ResposeEntity<Object> updateProduct(@PathVariable("id") String id)
+	 {}
+	 
+**Request Parameter**
+The @RequestParam is used to read the request parameter from the the Request URL.By default, it is a required parameter.
+
+	public ResponseEntiry<Object> getProduct(@RequestParam(value="name",required=false, defaultValue="honey") String name
+	{
+	}
+
+
+**GET API**
+
+The default HTTP request method is GET. This method does not require any Request Body. We can send request parameters and path variables to define the custom or dynamic URL.
+
+**POST API**
+
+The HTTP POST requst is used to create a resource. This method contains the Request Bosy. We cans send request parameters and path variables to define custom or dynamic URL.
+
+**PUT API**
+
+The HTTP PUT request is used to update the existing resource. This method contains a Request Body.
+
+**DELETE API**
+
+The HTTP Delete request is used to delete the existing resource. This method does not contain any request Bosy.
+
+#### Spring Boot - Service Components
+
+Service Components are the class file which contains @Service annotation. These class files are used to write business logic in a different layer, seperated from @RestController class file.
+	
+	public interface ProductService
+	{}
+	
+The class that implements the the interface with @Service annotation
+	
+	@Service
+	public class ProdServiceIml implements ProductService
+	{}
+
+#### Spring Boot - Thymeleaf
+
+THymeleaf is Java-based library used to create a web application. It provides a good support for serving a XHTML/HTML5 in web applications
+
+
+#### Spring Boot - Enabling Swagger 2
+
+Swagger2 is an open source project used to generate the REST API documents for RESTful web services.It provides a user interface to access our RESTful web services via the web browser.
+
+	<dependency>
+	<groupId>io.springfox</groupId>
+	<artifactId>springfox-swagger2</artifactId>
+ 	<version>2.7.0</version>
+	</dependency>
+	<dependency>
+ 	<groupId>io.springfox</groupId>		 
+ 	<artifactId>springfox-swagger-ui</artifactId>
+	<version>2.7.0</version>
+	</dependency>
+	
+
+**@EnableSwagger2** annotation is used to enable the Swagger2 in our Spring boot application.Add in main Spring boot application.
+
+	@SpringBootApplication
+	@EnableSwagger2
+		public class SwaggerDemoApplication {
+			public static void main(String[] args) {
+			SpringApplication.run(SwaggerDemoApplication.class, args);
+				}
+			}
+	
+
+Create Docket Bean to configure Swagger2 for Spring Boot Application.
+
+	@Bean
+	public Docket productApi() {
+			return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.tutorialspoint.swaggerdemo"
+	)).build();
+	}
+	
+
+
+#### Spring Boot - Creating Docker Image
+
+Docker is a container management service that eases building and deployment. The whole idea of Docker is for developers to easily develop applications, ship them into containers which can be developed anywhere.
+
+First, create a file with name **Dockerfile** under the directories src/main/docker with the contents shown.Note that this file is important to create a Docker image.
+
+	FROM java:8
+	VOLUME /tmp
+	ADD dockerapp-0.0.1-SNAPSHOT.jar app.jar
+	RUN bash -c 'touch/app.jar'
+	ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+	
+	
+Maven
+
+	<properties>
+		<docker.image.prefix>spring-boot-tutorialspoint</docker.image.prefix>
+	</properties>
+	
+	<build>
+		<plugins>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+					</configuration>
+				</plugin>
+		<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+		</plugins>
+	</build>
+	
+	
+
+#### Spring Boot - Flyway Database
+
+Flyway is a version control application to evolve our DB schema easiy and reliably across all our instances.
+
+Many software projects use relational databases. This requires handling of database migrations, called as Schema migrations.
+
+Dependencies:
+1. Spring Boot Starter Web
+2. Flyway
+3. MySQL
+4. JDBC
+
+Application Properties :
+	 
+	 spring.application.name=flywayapp
+	spring.datasource.driverClassName=com.mysql.jdbc.Driver
+	spring.datasource.url=jdbc:mysql://localhost:3306/USERSERVICE autoreconnect=true
+	spring.datasource.username=root
+	spring.datasource.password=root
+	spring.datasource.testOnBorrow=true
+		spring.datasource.testWhileIdle=true
+	spring.datasource.timeBetweenEvictionRunsMillis=60000
+	spring.datasource.minEvictableIdleTimeMillis=30000
+	spring.datasource.validationQuery=SELECT 1
+	spring.datasource.max-active=15
+	spring.datasource.max-idle=10
+	spring.datasource.max-wait=8000
+	flyway.url=jdbc:mysql://localhost:3306/mysql
+	flyway.schemas=USERSERVICE
+	flyway.user=root
+	flyway.password=root
+
+Now, create a SQL file under the **src/main/resources/db/migration** directory. Name the SQL file as "V1_Initial.sql"
+
+	create table users (id int auto_increment primary key,userid varchar(45));
+	insert into users (id,userid) values (1,'abc.com'');
+
+
+#### Spring Boot - Sending Email
+
+By using Spring Boot RESTful web services, we can send email with Gmail Transport Layer Security.
+	
+	<dependency>
+ 	<groupId>org.springframework.boot</groupId>
+ 	<artifactId>spring-boot-starter-mail</artifactId>
+	</dependency>
+
+#### Spring Boot - Hystrix
+
+A typical distributed system consists of many services collaborating together.
+
+These services are prone to failure or delayed responses. If a service fails it may impact on other services affecting performance and possibly making other parts of application inaccessible or in the worst case bring down the whole application.
+
+there are solutions available that help make applications resilient and fault tolerant – one such framework is Hystrix.
+
+Hystrix is a library from Netflix, it helps to control the interaction between services by providing fault tolerance and latency tolerance. It improves overall resilience of the system by isolating the failing services and stopping the cascading effect of failures.
+
+	<dependency>
+	<groupId>org.springframework.cloud</groupId>
+ 	<artifactId>spring-cloud-starter-hystrix</artifactId>
+	</dependency>
+	
+The **@EnableHystrix** annotation is used to enable the Hystrix functionalities into your
+Spring Boot application.
+
+#### Spring Boot - Web Socket
+
+To build an interactive web application in Spring Boot with Web Socket, we need to add following dependendcies
+
+1. spring-boot-starter-websocket
+2. webjars-locator
+3. sockjs-client
+4. stomp-websocket
+5. bootstrap
+6. jquery
+
+A message handling controller can be create with STOMP messaging. STOMP messages can be routed to @Controller class file.
+
+The **@EnableWebSocketMessageBroker** annotation is used to configure the Web socket message broker to create STOMP endpoints.
+
+
+
+
+
 
 
 
