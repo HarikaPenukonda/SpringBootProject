@@ -457,12 +457,31 @@ A message handling controller can be create with STOMP messaging. STOMP messages
 The **@EnableWebSocketMessageBroker** annotation is used to configure the Web socket message broker to create STOMP endpoints.
 
 
+#### Spring Boot - Spring for Apache Kafka
 
+In Big Data, an enormous volume of data is used. Regarding data, we have two main challenges. The first challenge is how to collect large volume of data and the second challenge is to analyze the collected data. To overcome those challenges we must need a messaging system.
 
+A messaging system is responsible for transferring data from one application to another, so the applications can focus on data, but not worry about how to share it.
 
+Apache Kafka is an open source project used to publish and subscribe the messages based on the fault-tolerant messaging system. It is fast, scalable and distributed by design.
 
+It is a distributed publish-subscribe messaging system and a robust queue that can handle a high volume of data and enables you to pass messages from one end-point to another.It is suitable for both offline and online message consumption. 
 
+	<dependency>
+ 	<groupId>org.springframework.kafka</groupId>
+ 	<artifactId>spring-kafka</artifactId>
+ 	<version>2.1.0.RELEASE</version>
+	</dependency>
+	
+#### Spring Boot - Twilio
 
+Twilio is a third party application used to send SMS and make voice calls from our application. It allows us to send the SMS and make voice calls programatically.
+	
+	<dependency>
+  	<groupId>com.twilio.sdk</groupId>
+ 	<artifactId>twilio</artifactId>
+ 	<version>7.16.1</version>
+	</dependency>
 
 ### Apache Derby
 Apache Derby is a Relational Database Management System which is fully based on (written/implemented in) Java programming language. It is an open source database developed by Apache Software Foundation.
