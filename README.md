@@ -489,7 +489,7 @@ Every repository in Spring Data extends the generic Repository Interface.
 
 CRUD functionality
 
-1. <S extends T> S save(S entity) - we can pass multiple objects to save them in a batch
+1. (<S extends T>) S save(S entity) - we can pass multiple objects to save them in a batch
 2. T findOne(ID primaryKey) - get a single entity based on passed primary key value
 3. Iterable<T> findAll() - get an iterable of all available entities in database.
 4. Long count() - return the count of total entities in a table
